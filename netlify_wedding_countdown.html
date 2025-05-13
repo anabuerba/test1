@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bodorrio C&S - Countdown</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #f9f7f7;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #e8eaec 100%);
+        }
+        .countdown-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #d96666;
+            font-family: cursive, 'Brush Script MT', 'Comic Sans MS', serif;
+            margin-bottom: 25px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .countdown {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .countdown-box {
+            width: 90px;
+            background: linear-gradient(145deg, #f1e8ff, #fff2f9);
+            border-radius: 12px;
+            padding: 15px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .countdown-box:hover {
+            transform: translateY(-5px);
+        }
+        .countdown-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #9966cc;
+            margin-bottom: 5px;
+        }
+        .countdown-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        .heart {
+            color: #ff6b6b;
+            font-size: 24px;
+            margin: 0 10px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .message {
+            font-style: italic;
+            color: #888;
+            margin: 20px 0;
+            font-size: 1.2rem;
+        }
+        .date-display {
+            font-weight: 500;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #555;
+        }
+        footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 500px) {
+            .countdown {
+                gap: 10px;
+            }
+            .countdown-box {
+                width: 70px;
+            }
+            .countdown-value {
+                font-size: 26px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown-container">
+        <h1>Bodorrio C&S</h1>
+        <div class="message">Contando hasta el gran día...</div>
+        
+        <div class="countdown">
+            <div class="countdown-box">
+                <div id="days" class="countdown-value">--</div>
+                <div class="countdown-label">Días</div>
+            </div>
+            <div class="countdown-box">
+                <div id="hours" class="countdown-value">--</div>
+                <div class="countdown-label">Horas</div>
+            </div>
+            <div class="countdown-box">
+                <div id="minutes" class="countdown-value">--</div>
+                <div class="countdown-label">Minutos</div>
+            </div>
+            <div class="countdown-box">
+                <div id="seconds" class="countdown-value">--</div>
+                <div class="countdown-label">Segundos</div>
+            </div>
+        </div>
+        
+        <div class="date-display">
+            <span class="heart">♥</span>
+            17 de Mayo, 2025 - 13:00 (CDMX)
+            <span class="heart">♥</span>
+        </div>
+        
+        <footer>
+            Con amor, C&S
+        </footer>
+    </div>
+
+    <script>
+        // Set the wedding date: May 17, 2025 at 13:00 (Mexico City time)
+        const weddingDate = new Date("May 17, 2025 13:00:00 GMT-0600").getTime();
+        
+        // Update the countdown every second
+        const countdownTimer = setInterval(function() {
+            // Get current date and time
+            const now = new Date().getTime();
+            
+            // Find the distance between now and the wedding date
+            const timeRemaining = weddingDate - now;
+            
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            // Display the results
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+            
+            // If the countdown is over, display a message
+            if (timeRemaining < 0) {
+                clearInterval(countdownTimer);
+                document.getElementById("days").innerHTML = "0";
+                document.getElementById("hours").innerHTML = "0";
+                document.getElementById("minutes").innerHTML = "0";
+                document.getElementById("seconds").innerHTML = "0";
+                document.querySelector(".message").innerHTML = "¡Felicitaciones! ¡Hoy es el gran día!";
+                document.querySelector(".countdown-container").style.background = "linear-gradient(145deg, #ffe8e8, #fff8e8)";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
